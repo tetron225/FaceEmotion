@@ -4,6 +4,7 @@ import quotes from './quotes.js'
 let abutton = document.getElementById('abutton');
 let avideo = document.getElementById('avideo');
 let astopbutton = document.getElementById('stop');
+let statbutton = document.getElementById('statbutton');
 
 function startVid() {
   //mediaDevices returns a MediaDevice object that provides connected devices such as a webcam
@@ -50,12 +51,20 @@ abutton.addEventListener('click', () => {
   ]).then(startVid);
 });
 
+statbutton.addEventListener('click', () => {
+      if(window.getComputedStyle(statcontainer).display === 'none') {
+        statcontainer.style.display = 'block'
+      } else {
+        statcontainer.style.display = 'none'
+      }
+});
+
 avideo.addEventListener('play', () => {
   //using canvas to draw the outlines on the webcam
   //calls the createCanvas function from faceapi to create a canvas within the video element (webcam)
   const canvas = faceapi.createCanvasFromMedia(avideo);
   //we append the canvas to the body of the HTML
-  let container = document.getElementById('container');
+  let container = document.getElementById('vidcontainer');
   //appends the DOM to the canvas
   container.append(canvas);
   //sets the display size to the avideo value
@@ -74,8 +83,6 @@ avideo.addEventListener('play', () => {
       .withFaceLandmarks()
       .withFaceExpressions();
 
-    console.log(detect);
-
     //resize the face detection and using the displaySize height and width
     const resizeDetections = faceapi.resizeResults(detect, displaySize);
 
@@ -90,58 +97,54 @@ avideo.addEventListener('play', () => {
     //expresses what kind of expression the face is showing
     faceapi.draw.drawFaceExpressions(canvas, resizeDetections);
 
+
     //Unable to find the function to produce the expression labels
     //Opted to use its arrays/objects to find the expressions.
     //expression values have a range from 0 to 1
     //if the expression value is closest to 1, it will show on the canvas
     //extracted the value here and linked to a textContent value in HTML
-    let obj = detect[0].expressions;
+    let expressionList = detect[0].expressions;
     let feeling = '';
     let feelnum = 0;
     let emoji;
-    for (const keys in obj) {
-      if (obj[keys] > feelnum) {
-        feelnum = obj[keys];
+    for (const keys in expressionList) {
+      if (expressionList[keys] > feelnum) {
+        feelnum = expressionList[keys];
         feeling = keys;
       }
     }
+    //======================================================================================================
     //changed the expression from neutral to calm
-    let wordFeeling = feeling;
+    //let wordFeeling = feeling;
     switch (feeling) {
       case 'neutral':
-        emoji = String.fromCodePoint(0x1f611);
-        feeling = emoji;
+        feeling= String.fromCodePoint(0x1f611);
         break;
       case 'happy':
-        emoji = String.fromCodePoint(0x1f604);
-        feeling = emoji;
+        feeling = String.fromCodePoint(0x1f604);
         break;
       case 'sad':
-        emoji = String.fromCodePoint(0x1f622);
-        feeling = emoji;
+        feeling = String.fromCodePoint(0x1f622);
         break;
       case 'angry':
-        emoji = String.fromCodePoint(0x1f92c);
-        feeling = emoji;
+        feeling = String.fromCodePoint(0x1f92c);
         break;
       case 'fearful':
-        emoji = String.fromCodePoint(0x1f631);
-        feeling = emoji;
+        feeling = String.fromCodePoint(0x1f631);
         break;
       case 'disgusted':
-        emoji = String.fromCodePoint(0x1f92e);
-        feeling = emoji;
+        feeling = String.fromCodePoint(0x1f92e);
         break;
       case 'surprised':
-        emoji = String.fromCodePoint(0x1f632);
-        feeling = emoji;
+        feeling = String.fromCodePoint(0x1f632);
         break;
     }
     const aFeeling = document.getElementById('expression');
     aFeeling.textContent = feeling;
     aFeeling.style.paddingLeft = '10px';
     aFeeling.style.fontSize = '50px';
-
+    //========================================================================================================
+    /*
     let stringFeel = wordFeeling + "Quotes";
     if (quotes[stringFeel]) {
       const quoteArr = quotes[stringFeel]; // Get the array of quotes based on the feeling
@@ -161,13 +164,33 @@ avideo.addEventListener('play', () => {
     } else {
       console.error('No quotes available for the selected feeling.');
     }
-    
+    */
+    //=====================================================================================================
+    let statcontainer = document.getElementById('statcontainer');
 
+    for(let key in expressionList) {
+        if(document.getElementById(key) !== null) {
+          let temp = document.getElementById(key);
+          temp.textContent = key + ': ' + Math.floor(expressionList[key] * 100) + '%';
+        } else {
+          if(key === 'asSortedArray') {
+            continue;
+          }
+          let temp = document.createElement('div');
+          temp.setAttribute('id', `${key}`);
+          temp.textContent = key + ': ' + Math.floor(expressionList[key] * 100) + '%';
+          statcontainer.append(temp);
+        }
+      }
+
+    //======================================================================================================
+
+    
     //aFeeling.style.paddingBottom = '100px';
 
     //added a second event listener on the same press so that it clears the canvas as well as the srcObject
     astopbutton.addEventListener('click', () => {
       canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     });
-  }, 100);
+  }, 300);
 });
