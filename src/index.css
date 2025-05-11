@@ -16,6 +16,18 @@ h1 {
   line-height: 1.1;
 }
 
+button {
+}
+
+#vidcontainer {
+  display: grid;
+  grid-template: 1fr/1fr;
+  place-items: center;
+}
+
+#avideo {
+}
+
 #container {
   display: flex;
   flex-direction: column;
@@ -51,3 +63,17 @@ canvas {
   height: auto;
 }
 
+#statbutton {
+}
+
+#statcontainer {
+  display: none;
+}
+
+#vidoptioncontainer {
+  width: 640px;
+  height: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
