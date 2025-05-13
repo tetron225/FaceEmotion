@@ -1,7 +1,5 @@
-# FaceID
+# FaceEmotion
 
-Enabling the server
-node server.mjs
+Showing the person's Face Emotion using a video camera near you
 
-nodemon can be enabled as well
-nodemon server.mjs
+Helps to express what type of emotion the person feels currently
