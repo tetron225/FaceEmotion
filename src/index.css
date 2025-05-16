@@ -23,10 +23,15 @@ button {
   display: grid;
   grid-template: 1fr/1fr;
   place-items: center;
+  width: 640px;
+  height: 480px;
 }
 
 #avideo {
+  object-fit: cover;
+  object-position: center;
 }
+
 
 #container {
   display: flex;
@@ -44,6 +49,17 @@ canvas {
   justify-content: center;
   flex-direction: row;
   font-size: 30px;
+  padding-bottom: 20px;
+  width: 348px;
+  height: 87px;
+}
+
+#container3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-basis: 50%;
+  height: 100%;
 }
 
 #justtext {
@@ -71,9 +87,14 @@ canvas {
 }
 
 #vidoptioncontainer {
-  width: 640px;
-  height: 200px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  flex-shrink: 1;
+  justify-content: center;
+  height: 480px;
+}
+
+#resultcontainer {
+  height: 200px;
+  width: 785.73px;
 }
