@@ -176,4 +176,5 @@ img {
   grid-column-start: 3;
   grid-column-end: 4;
   height: 150px;
+  width: 150px;
 }
