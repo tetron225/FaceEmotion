@@ -6,6 +6,8 @@ let avideo = document.getElementById('avideo');
 let astopbutton = document.getElementById('stop');
 let statbutton = document.getElementById('statbutton');
 let moodbutton = document.getElementById('picturemood') //links to picture mood label
+let canvastoggle = document.getElementById('specialbutton')
+let wasToggled = false;
 
 function startVid() {
   //mediaDevices returns a MediaDevice object that provides connected devices such as a webcam
@@ -59,6 +61,16 @@ moodbutton.addEventListener('click', () => {
   }
 })
 
+canvastoggle.addEventListener('click', () => {
+  if(window.getComputedStyle(canvasdraw).opacity === '0') {
+    canvasdraw.style.opacity = '1';
+    wasToggled = true;
+  } else {
+    canvasdraw.style.opacity = '0';
+    wasToggled = false;
+  }
+})
+
 //Once the button is clicked, it will load the needed Uri from the models/weights
 //then through a promise, it will start the startVid function
 abutton.addEventListener('click', () => {
@@ -83,6 +95,7 @@ avideo.addEventListener('play', () => {
   //using canvas to draw the outlines on the webcam
   //calls the createCanvas function from faceapi to create a canvas within the video element (webcam)
   const canvas = faceapi.createCanvasFromMedia(avideo);
+  canvas.setAttribute('id', 'canvasdraw');
   //we append the canvas to the body of the HTML
   let container = document.getElementById('vidcontainer');
   //appends the DOM to the canvas
@@ -118,18 +131,22 @@ avideo.addEventListener('play', () => {
     faceapi.draw.drawFaceLandmarks(canvas, resizeDetections);
     //expresses what kind of expression the face is showing
     faceapi.draw.drawFaceExpressions(canvas, resizeDetections);
-    canvas.style.opacity = 0;
-    
+    if(!wasToggled) {
+      canvas.style.opacity = 0;
+    } else {
+      canvas.style.opacity = 1;
+    }
 
     //Unable to find the function to produce the expression labels
     //Opted to use its arrays/objects to find the expressions.
     //expression values have a range from 0 to 1
     //if the expression value is closest to 1, it will show on the canvas
     //extracted the value here and linked to a textContent value in HTML
+    
     let expressionList = detect[0].expressions;
     let feeling = '';
     let feelnum = 0;
-    let emoji;
+
     for (const keys in expressionList) {
       if (expressionList[keys] > feelnum) {
         feelnum = expressionList[keys];
@@ -138,7 +155,7 @@ avideo.addEventListener('play', () => {
     }
     //======================================================================================================
     //changed the expression from neutral to calm
-    //let wordFeeling = feeling;
+    let wordFeeling = feeling;
     switch (feeling) {
       case 'neutral':
         feeling= String.fromCodePoint(0x1f611);
@@ -167,8 +184,9 @@ avideo.addEventListener('play', () => {
     aFeeling.style.paddingLeft = '10px';
     aFeeling.style.fontSize = '50px';
     //========================================================================================================
-    
-    let stringFeel = feeling + "Quotes";
+    /*
+    let stringFeel = wordFeeling + "Quotes";
+    console.log(stringFeel)
     if (quotes[stringFeel]) {
       const quoteArr = quotes[stringFeel]; // Get the array of quotes based on the feeling
       const randomIndex = Math.floor(Math.random() * quoteArr.length); // Pick a random quote
@@ -178,7 +196,10 @@ avideo.addEventListener('play', () => {
     
       // Check if the quoteElement exists to avoid potential errors
       if (quoteElement) {
-        quoteElement.textContent = selectedQuote; // Set the text content of the quote box
+        setTimeout(() => { 
+          quoteElement.textContent = selectedQuote
+          return; 
+        }, 1000); // Set the text content of the quote box
         quoteElement.style.fontSize = '20px'; // Set font size or any other style you prefer
         quoteElement.style.padding = '10px'; // Optional: Adding some padding for a better appearance
       } else {
@@ -187,22 +208,56 @@ avideo.addEventListener('play', () => {
     } else {
       console.error('No quotes available for the selected feeling.');
     }
-    
+    */
     //=====================================================================================================
     let statcontainer = document.getElementById('statcontainer');
 
     for(let key in expressionList) {
         if(document.getElementById(key) !== null) {
+          if(key === 'neutral') {
+            let temp = document.getElementById(key);
+            let tempNumber = document.getElementById(`${key + key}`);
+            temp.textContent = 'CALM' + ': ' 
+            tempNumber.textContent = Math.floor(expressionList[key] * 100) + '%'
+            continue;
+          }
+          let upperText = key
           let temp = document.getElementById(key);
-          temp.textContent = key + ': ' + Math.floor(expressionList[key] * 100) + '%';
+          let tempNumber = document.getElementById(`${key + key}`);
+          temp.textContent = upperText.toUpperCase() + ': ';
+          tempNumber.textContent = Math.floor(expressionList[key] * 100) + '%'
         } else {
           if(key === 'asSortedArray') {
             continue;
           }
+
+          let tempcontainer = document.createElement('div');
+          tempcontainer.setAttribute('id', 'expressioncontain')
+          tempcontainer.style.display = 'flex';
+          tempcontainer.style.flexDirection = 'row';
+          tempcontainer.style.justifyContent = 'space-between';
           let temp = document.createElement('div');
+          let tempnumber = document.createElement('div')
+
+          if(key === 'neutral') {
+            temp.setAttribute('id', `${key}`);
+            tempnumber.setAttribute('id', `${key + key}`)
+            temp.textContent = 'CALM' + ': ';
+            tempnumber.textContent = Math.floor(expressionList[key] * 100) + '%';
+            statcontainer.append(tempcontainer);
+            tempcontainer.append(temp);
+            tempcontainer.append(tempnumber)
+            continue;
+          }
+          
           temp.setAttribute('id', `${key}`);
-          temp.textContent = key + ': ' + Math.floor(expressionList[key] * 100) + '%';
-          statcontainer.append(temp);
+          tempnumber.setAttribute('id', `${key + key}`)
+          let upperText = key
+          temp.textContent = upperText.toUpperCase() + ': ' 
+          tempnumber.textContent = Math.floor(expressionList[key] * 100) + '%';
+          statcontainer.append(tempcontainer);
+          tempcontainer.append(temp);
+          tempcontainer.append(tempnumber)
         }
       }
 
