@@ -5,6 +5,7 @@ let abutton = document.getElementById('abutton');
 let avideo = document.getElementById('avideo');
 let astopbutton = document.getElementById('stop');
 let statbutton = document.getElementById('statbutton');
+let moodbutton = document.getElementById('picturemood') //links to picture mood label
 
 function startVid() {
   //mediaDevices returns a MediaDevice object that provides connected devices such as a webcam
@@ -40,6 +41,24 @@ function startVid() {
     .catch(alert);
 }
 
+async function gettingAPI() {
+  let imgPic = document.querySelector('img')
+  let response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=u9VSCfhJZXs12S0sOtJtef44hUHaPyFR&s=funny', {mode: 'cors'})
+  let imagedata = await response.json();
+  imgPic.src = imagedata.data.images.original.url
+}
+
+moodbutton.addEventListener('click', () => {
+  if(window.getComputedStyle(imagecontainer).display === 'none') {
+    imagecontainer.style.display = 'block'
+    gettingAPI();
+  }
+  else {
+    imagecontainer.style.display = 'none'
+    imagecontainer.removeAttribute('src')
+  }
+})
+
 //Once the button is clicked, it will load the needed Uri from the models/weights
 //then through a promise, it will start the startVid function
 abutton.addEventListener('click', () => {
@@ -52,6 +71,7 @@ abutton.addEventListener('click', () => {
 });
 
 statbutton.addEventListener('click', () => {
+  //window.getComputedStyle(statcontainer).
       if(window.getComputedStyle(statcontainer).display === 'none') {
         statcontainer.style.display = 'block'
       } else {
@@ -90,13 +110,15 @@ avideo.addEventListener('play', () => {
     //getting the context from the canvas (the 2d shape) and clear it
     //clearRect is a canvas method
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    
+    
     //actually draw the canvas onto the video image
     faceapi.draw.drawDetections(canvas, resizeDetections);
     //draws the canvas to where the face is located
     faceapi.draw.drawFaceLandmarks(canvas, resizeDetections);
     //expresses what kind of expression the face is showing
     faceapi.draw.drawFaceExpressions(canvas, resizeDetections);
-
+    
 
     //Unable to find the function to produce the expression labels
     //Opted to use its arrays/objects to find the expressions.
@@ -144,8 +166,8 @@ avideo.addEventListener('play', () => {
     aFeeling.style.paddingLeft = '10px';
     aFeeling.style.fontSize = '50px';
     //========================================================================================================
-    /*
-    let stringFeel = wordFeeling + "Quotes";
+    
+    let stringFeel = feeling + "Quotes";
     if (quotes[stringFeel]) {
       const quoteArr = quotes[stringFeel]; // Get the array of quotes based on the feeling
       const randomIndex = Math.floor(Math.random() * quoteArr.length); // Pick a random quote
@@ -164,7 +186,7 @@ avideo.addEventListener('play', () => {
     } else {
       console.error('No quotes available for the selected feeling.');
     }
-    */
+    
     //=====================================================================================================
     let statcontainer = document.getElementById('statcontainer');
 
