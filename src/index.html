@@ -23,23 +23,29 @@
         <video id="avideo" width="640" height="480" autoplay muted></video>
       </div>
       <div id="vidoptioncontainer">
-        <div id="option1">
-          <button id="quotebutton">Quote Inspiration</button>
+        <div id="option1" class="containbutton">
+          <input type="checkbox" id="quote">
+          <label for="quote" class="button" id="quotebutton"></label>
+          <div class="text">Quotes</div>
         </div>
 
-        <div id="option2">
-          <button id="picturemood">Change Your Emotion</button>
+        <div id="option2" class="containbutton">
+          <input type="checkbox" id="mood">
+          <label for="mood" class="button" id="picturemood"></label>
+          <div class="text">Image Fun</div>
         </div>
 
-        <div id="option3">
-          <button id="statbutton">Statistics</button>
+        <div id="option3" class="containbutton">
+          <input type="checkbox" id="stats">
+          <label for="stats" class="button" id="statbutton"></label>
+          <div class="text">Statistics</div>
         </div>
       
       </div>
       </div>
       <div id="resultcontainer">
         <div id="quoteBox"></div>
-        <div id="imagecontainer"></div>
+        <img id="imagecontainer"></img>
         <div id="statcontainer"></div>
       </div>
 
