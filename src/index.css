@@ -16,9 +16,6 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-}
-
 #vidcontainer {
   display: grid;
   grid-template: 1fr/1fr;
@@ -79,9 +76,6 @@ canvas {
   height: auto;
 }
 
-#statbutton {
-}
-
 #statcontainer {
   display: none;
 }
@@ -97,4 +91,88 @@ canvas {
 #resultcontainer {
   height: 200px;
   width: 785.73px;
+}
+
+.containbutton {
+  width: 200px;
+  height: 50px;;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.button {
+  background-color: #d2d2d2;
+  width: 50px;
+  height: 25px;
+  border-radius:50px;
+  cursor: pointer;
+  position: relative;
+  transition: 0.2s;
+}
+
+.button::before{
+  position: absolute;
+  content:'';
+  background-color:#fff;
+  width: 22.5px;
+  height: 22.5px;
+  border-radius: 50px;
+  margin: 1.25px;
+  transition: 0.2s
+}
+
+input:checked + .button {
+  background-color: #20096d;
+}
+
+input:checked + .button::before {
+    transform:translateX(25px);
+}
+
+input {
+  display: none;
+}
+
+.text {
+  display:flex;
+  width: 80px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+img {
+  height: 150px;
+  width: 150px;
+  display: none;
+}
+
+#resultcontainer {
+  display: grid;
+  grid-template-columns: 280px 280px 280px;
+  width: 840px;
+  align-items: center;
+  justify-items: center;
+}
+
+#quoteBox {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  height: 150px;
+}
+
+#imagecontainer {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  height: 150px;
+  
+}
+
+#statcontainer {
+  grid-column-start: 3;
+  grid-column-end: 4;
+  height: 150px;
 }
