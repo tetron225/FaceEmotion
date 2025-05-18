@@ -118,6 +118,7 @@ avideo.addEventListener('play', () => {
     faceapi.draw.drawFaceLandmarks(canvas, resizeDetections);
     //expresses what kind of expression the face is showing
     faceapi.draw.drawFaceExpressions(canvas, resizeDetections);
+    canvas.style.opacity = 0;
     
 
     //Unable to find the function to produce the expression labels
