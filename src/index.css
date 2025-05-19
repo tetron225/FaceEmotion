@@ -97,7 +97,7 @@ canvas {
 .containbutton {
   width: 200px;
   height: 50px;;
-  background-color: #fff;
+  background-color: #ccd5ae;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -111,6 +111,7 @@ canvas {
   cursor: pointer;
   position: relative;
   transition: 0.2s;
+  background-color: #95a665
 }
 
 .button::before{
