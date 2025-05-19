@@ -184,7 +184,7 @@ avideo.addEventListener('play', () => {
     aFeeling.style.paddingLeft = '10px';
     aFeeling.style.fontSize = '50px';
     //========================================================================================================
-    /*
+    
     let stringFeel = wordFeeling + "Quotes";
     console.log(stringFeel)
     if (quotes[stringFeel]) {
@@ -208,7 +208,7 @@ avideo.addEventListener('play', () => {
     } else {
       console.error('No quotes available for the selected feeling.');
     }
-    */
+    
     //=====================================================================================================
     let statcontainer = document.getElementById('statcontainer');
 
