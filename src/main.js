@@ -8,6 +8,7 @@ let statbutton = document.getElementById('statbutton');
 let moodbutton = document.getElementById('picturemood') //links to picture mood label
 let canvastoggle = document.getElementById('specialbutton')
 let wasToggled = false;
+let quotebutton = document.getElementById('quotebutton');
 
 function startVid() {
   //mediaDevices returns a MediaDevice object that provides connected devices such as a webcam
@@ -49,6 +50,14 @@ async function gettingAPI() {
   let imagedata = await response.json();
   imgPic.src = imagedata.data.images.original.url
 }
+
+quotebutton.addEventListener('click', () => {
+  if(window.getComputedStyle(quoteBox).display === 'none') {
+    quoteBox.style.display = 'block'
+  } else {
+    quoteBox.style.display = 'none'
+  }
+})
 
 moodbutton.addEventListener('click', () => {
   if(window.getComputedStyle(imagecontainer).display === 'none') {
