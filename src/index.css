@@ -73,8 +73,10 @@ canvas {
 }
 
 #abutton, #stop {
-  width: 100px;
-  height: auto;
+  width:125px;
+  height: 50px;
+  margin-bottom: 20px;
+  border-radius: 10px;
 }
 
 #statcontainer {
@@ -164,6 +166,7 @@ img {
   grid-column-start: 1;
   grid-column-end: 2;
   height: 150px;
+  display: none;
 }
 
 #imagecontainer {
@@ -178,4 +181,11 @@ img {
   grid-column-end: 4;
   height: 150px;
   width: 150px;
+}
+
+#startcontainer {
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between
 }
