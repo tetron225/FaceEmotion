@@ -1,4 +1,5 @@
 import quotes from './quotes.js'
+import { gettingAPI } from './giphyAPI.js'
 //import 
 
 let abutton = document.getElementById('abutton');
@@ -9,7 +10,12 @@ let moodbutton = document.getElementById('picturemood') //links to picture mood 
 let canvastoggle = document.getElementById('specialbutton')
 let wasToggled = false;
 let quotebutton = document.getElementById('quotebutton');
-
+//====================================================================================================
+/*
+starts the video module that currently is connected to devices because it requires
+to start detecting facial images from the face-api.js library through the canvas library.
+It also requires a stop option since memory should not be wasted if it was continuously used.
+*/
 function startVid() {
   //mediaDevices returns a MediaDevice object that provides connected devices such as a webcam
   navigator.mediaDevices
@@ -43,14 +49,11 @@ function startVid() {
     })
     .catch(alert);
 }
+//=============================================================================================
 
-async function gettingAPI() {
-  let imgPic = document.querySelector('img')
-  let response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=u9VSCfhJZXs12S0sOtJtef44hUHaPyFR&s=funny', {mode: 'cors'})
-  let imagedata = await response.json();
-  imgPic.src = imagedata.data.images.original.url
-}
+/*
 
+*/
 quotebutton.addEventListener('click', () => {
   if(window.getComputedStyle(quoteBox).display === 'none') {
     quoteBox.style.display = 'block'
@@ -58,7 +61,11 @@ quotebutton.addEventListener('click', () => {
     quoteBox.style.display = 'none'
   }
 })
-
+//=============================================================================================
+/* 
+motivation button is toggled or not because it would be an optional way for users
+to want to be motivated or not.
+*/
 moodbutton.addEventListener('click', () => {
   if(window.getComputedStyle(imagecontainer).display === 'none') {
     imagecontainer.style.display = 'block'
@@ -69,7 +76,11 @@ moodbutton.addEventListener('click', () => {
     imagecontainer.removeAttribute('src')
   }
 })
-
+//=============================================================================================
+/*
+toggles the canvas to give an option to learn about the process of how the emotions are
+read through.
+*/
 canvastoggle.addEventListener('click', () => {
   if(window.getComputedStyle(canvasdraw).opacity === '0') {
     canvasdraw.style.opacity = '1';
@@ -79,9 +90,11 @@ canvastoggle.addEventListener('click', () => {
     wasToggled = false;
   }
 })
-
-//Once the button is clicked, it will load the needed Uri from the models/weights
-//then through a promise, it will start the startVid function
+//=============================================================================================
+/*
+needed to load the uri from the models/weights first because it would need to required
+functions beforehand to start setting up the canvas when video starts.
+*/
 abutton.addEventListener('click', () => {
   Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri('/models/weights'),
@@ -91,15 +104,23 @@ abutton.addEventListener('click', () => {
   ]).then(startVid);
 });
 
+//=============================================================================================
+/*
+gives an option for users to toggle to understand how the emotions are calculated by listing
+the percentages of each emotion.
+*/
 statbutton.addEventListener('click', () => {
-  //window.getComputedStyle(statcontainer).
-      if(window.getComputedStyle(statcontainer).display === 'none') {
-        statcontainer.style.display = 'block'
-      } else {
-        statcontainer.style.display = 'none'
-      }
+    if(window.getComputedStyle(statcontainer).display === 'none') {
+      statcontainer.style.display = 'block'
+    } else {
+      statcontainer.style.display = 'none'
+    }
 });
 
+/*
+Persistent video event that plays because user's face expression constantly changes and would require
+constant update from the canvas as well as the type of emotions
+*/
 avideo.addEventListener('play', () => {
   //using canvas to draw the outlines on the webcam
   //calls the createCanvas function from faceapi to create a canvas within the video element (webcam)
@@ -145,10 +166,11 @@ avideo.addEventListener('play', () => {
     } else {
       canvas.style.opacity = 1;
     }
-
-    //Unable to find the function to produce the expression labels
-    //Opted to use its arrays/objects to find the expressions.
-    //expression values have a range from 0 to 1
+    /*
+    calling an object list of expressions due to the fact that the emotions are currently
+    hardcoded and cannot be retrieved unless directly grabbed from 
+    */
+    //Expression values have a range from 0 to 1
     //if the expression value is closest to 1, it will show on the canvas
     //extracted the value here and linked to a textContent value in HTML
     
@@ -162,12 +184,13 @@ avideo.addEventListener('play', () => {
         feeling = keys;
       }
     }
-    //======================================================================================================
+//======================================================================================================
     //changed the expression from neutral to calm
     let wordFeeling = feeling;
+    //checks to see what the current feeling is and shows the appropriate emoji
     switch (feeling) {
       case 'neutral':
-        feeling= String.fromCodePoint(0x1f611);
+        feeling = String.fromCodePoint(0x1f611);
         break;
       case 'happy':
         feeling = String.fromCodePoint(0x1f604);
@@ -192,8 +215,7 @@ avideo.addEventListener('play', () => {
     aFeeling.textContent = feeling;
     aFeeling.style.paddingLeft = '10px';
     aFeeling.style.fontSize = '50px';
-    //========================================================================================================
-    
+//========================================================================================================
     let stringFeel = wordFeeling + "Quotes";
     console.log(stringFeel)
     if (quotes[stringFeel]) {
@@ -217,8 +239,7 @@ avideo.addEventListener('play', () => {
     } else {
       console.error('No quotes available for the selected feeling.');
     }
-    
-    //=====================================================================================================
+//=====================================================================================================
     let statcontainer = document.getElementById('statcontainer');
 
     for(let key in expressionList) {
@@ -239,7 +260,6 @@ avideo.addEventListener('play', () => {
           if(key === 'asSortedArray') {
             continue;
           }
-
           let tempcontainer = document.createElement('div');
           tempcontainer.setAttribute('id', 'expressioncontain')
           tempcontainer.style.display = 'flex';
