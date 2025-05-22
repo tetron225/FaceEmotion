@@ -241,6 +241,10 @@ avideo.addEventListener('play', () => {
     }
 //=====================================================================================================
     let statcontainer = document.getElementById('statcontainer');
+    /*
+    Creates a stats of percentage of each emotion to analyze the data on the user's face and showing
+    how accurate the current emotion is expressed in percentage
+    */
 
     for(let key in expressionList) {
         if(document.getElementById(key) !== null) {
