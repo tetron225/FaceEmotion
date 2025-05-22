@@ -1,6 +1,5 @@
 import quotes from './quotes.js'
 import { gettingAPI } from './giphyAPI.js'
-//import 
 
 let abutton = document.getElementById('abutton');
 let avideo = document.getElementById('avideo');
@@ -36,7 +35,7 @@ function startVid() {
         avideo.addEventListener('loadedmetadata', () => {
           avideo.play();
         });
-        //creates a button that will stop the stream of the video.
+        //listens to the click of a button that will stop the stream of the video.
         astopbutton.addEventListener('click', () => {
           //stops the stream
           stream.getTracks().forEach((track) => {
@@ -44,6 +43,8 @@ function startVid() {
           });
           //replaces the src with null so that it does not conflict if another value gets inserted into src through another click button
           avideo.srcObject = null;
+          let expression = document.getElementById('expression')
+          expression.innerHTML = ''
         });
       }
     })
@@ -302,6 +303,7 @@ avideo.addEventListener('play', () => {
     //added a second event listener on the same press so that it clears the canvas as well as the srcObject
     astopbutton.addEventListener('click', () => {
       canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+      
     });
   }, 300);
 });
